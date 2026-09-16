@@ -37,6 +37,10 @@ WooCommerce products ──▶ first product image ──▶ same model ──�
    vector by the selected model, then L2-normalized:
    - `multimodal` — OpenAI CLIP ViT-B/32 image tower (512-d). Good default;
      captures semantic similarity ("a shoe looks like another shoe").
+   - `siglip` — Google SigLIP ViT-B/16 (768-d pooled features). Trained with a
+     sigmoid pairwise loss, usually a sharper image-to-image matcher than CLIP.
+     Its similarity scores sit in a different range, so the `min_score`
+     strictness slider generally needs lowering for this mode.
    - `dino` — Meta DINOv2 ViT-B/14 (768-d, CLS token). Self-supervised, tuned
      towards pure visual similarity (shape, texture, layout).
    - `dino3` — reserved for DINOv3 (`facebook/dinov3-vitb16-pretrain-lvd1689m`),
@@ -73,12 +77,6 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
 ```
 
-The DINOv2/DINOv3 modes also need `transformers`:
-
-```bash
-pip install transformers
-```
-
 Then configure the environment:
 
 ```bash
@@ -95,7 +93,7 @@ cp .env.example .env
 | `WC_CONSUMER_SECRET` | yes | — | WooCommerce REST API consumer secret (`cs_...`) |
 | `WC_PER_PAGE` | no | `10` | Products requested per API page |
 | `WC_MAX_PAGES` | no | `5` | Maximum pages pulled, so `WC_PER_PAGE * WC_MAX_PAGES` products get indexed |
-| `HF_TOKEN` | no | — | Hugging Face access token, required to download gated model weights such as DINOv3 |
+| `HF_TOKEN` | no | — | Hugging Face access token, passed to `from_pretrained` for the SigLIP/DINO modes; required for gated weights such as DINOv3 |
 
 Create the WooCommerce key under **WooCommerce → Settings → Advanced → REST API**.
 Generate an `HF_TOKEN` at https://huggingface.co/settings/tokens.
