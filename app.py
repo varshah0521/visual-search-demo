@@ -1364,13 +1364,17 @@ Credentials are read from environment variables -- never hardcode a live
 consumer key/secret into this file, since it's easy to accidentally commit
 or share a script like this.
 
-    export WC_BASE_URL="https://wpemc.egrovetech.com"
-    export WC_CONSUMER_KEY="ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    export WC_CONSUMER_SECRET="cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+They are loaded from a local `.env` file (see `.env.example`) via
+python-dotenv, or from the real environment:
+
+    WC_BASE_URL="https://your-store.example.com"
+    WC_CONSUMER_KEY="ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    WC_CONSUMER_SECRET="cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 Optional:
-    export WC_PER_PAGE=10      # products per API page (WooCommerce default/your limit)
-    export WC_MAX_PAGES=5      # how many pages to pull -> WC_PER_PAGE * WC_MAX_PAGES products indexed
+    WC_PER_PAGE=10      # products per API page (WooCommerce default/your limit)
+    WC_MAX_PAGES=5      # how many pages to pull -> WC_PER_PAGE * WC_MAX_PAGES products indexed
+    HF_TOKEN=hf_xxx     # needed for gated Hugging Face weights (DINOv3)
 
 If you get a 401 from the API: check WordPress -> WooCommerce -> Settings
 -> Advanced -> REST API that the key still exists and has at least Read
@@ -1382,9 +1386,9 @@ Run it
     python3 -m venv venv
     source venv/bin/activate          (Windows: venv\\Scripts\\activate)
     pip install -r requirements.txt   (needs: flask, torch, torchvision, open_clip_torch,
-                                        transformers, pillow, numpy, requests)
-    export WC_CONSUMER_KEY="..."
-    export WC_CONSUMER_SECRET="..."
+                                        transformers, pillow, numpy, requests,
+                                        python-dotenv)
+    cp .env.example .env              (then fill in your store credentials)
     python app.py
     open http://localhost:5000
 
@@ -1401,9 +1405,12 @@ import traceback
 import numpy as np
 import requests
 from PIL import Image
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, Response
 
 import torch
+
+load_dotenv()
 
 # --------------------------------------------------------------------------
 # Config
@@ -1428,9 +1435,9 @@ DINOV3_MODEL_ID = "facebook/dinov3-vitb16-pretrain-lvd1689m"
 _models = {}  # lazy-loaded model cache: {"multimodal": (...), "dino": (...)}
 
 # WooCommerce REST API
-WC_BASE_URL = os.environ.get("WC_BASE_URL", "https://wpemc.egrovetech.com").rstrip("/")
-WC_CONSUMER_KEY = os.environ.get("WC_CONSUMER_KEY", "ck_e097ddcc64c4670b62532b2fa3addb1d46d7d136")
-WC_CONSUMER_SECRET = os.environ.get("WC_CONSUMER_SECRET", "cs_6689631b47559b3140f83bef64dfd41560f16216")
+WC_BASE_URL = os.environ.get("WC_BASE_URL", "").rstrip("/")
+WC_CONSUMER_KEY = os.environ.get("WC_CONSUMER_KEY", "")
+WC_CONSUMER_SECRET = os.environ.get("WC_CONSUMER_SECRET", "")
 WC_PER_PAGE = int(os.environ.get("WC_PER_PAGE", "10"))
 WC_MAX_PAGES = int(os.environ.get("WC_MAX_PAGES", "5"))
 WC_TIMEOUT = 15  # seconds, for both the products list call and each image download
@@ -1493,10 +1500,10 @@ def fetch_products():
     """Pull products from the WooCommerce REST API, paginating with
     WC_PER_PAGE per page until a page comes back empty or WC_MAX_PAGES
     is hit. Returns the raw list of WooCommerce product dicts."""
-    if not WC_CONSUMER_KEY or not WC_CONSUMER_SECRET:
+    if not WC_BASE_URL or not WC_CONSUMER_KEY or not WC_CONSUMER_SECRET:
         raise RuntimeError(
-            "WC_CONSUMER_KEY / WC_CONSUMER_SECRET are not set. "
-            "Export them before running (see the module docstring)."
+            "WC_BASE_URL / WC_CONSUMER_KEY / WC_CONSUMER_SECRET are not set. "
+            "Copy .env.example to .env and fill them in before running."
         )
 
     products = []
@@ -1886,10 +1893,10 @@ def do_search():
 
 if __name__ == "__main__":
     print(f"Device: {DEVICE}")
-    if not WC_CONSUMER_KEY or not WC_CONSUMER_SECRET:
+    if not WC_BASE_URL or not WC_CONSUMER_KEY or not WC_CONSUMER_SECRET:
         print(
-            "[warn] WC_CONSUMER_KEY / WC_CONSUMER_SECRET not set -- searches will fail "
-            "until you export them (see the module docstring)."
+            "[warn] WC_BASE_URL / WC_CONSUMER_KEY / WC_CONSUMER_SECRET not set -- searches "
+            "will fail until you set them in .env (see .env.example)."
         )
     print("Pre-building product indexes (first run downloads model weights + product images)...")
     for m in MODES:
