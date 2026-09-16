@@ -1344,9 +1344,10 @@ import os
 Visual Search demo (WooCommerce-backed)
 =========================================
 1. Upload an image (or capture a photo from your camera on mobile).
-2. The image is converted into a vector ("embedding") using one of two
+2. The image is converted into a vector ("embedding") using one of the
    swappable models:
      - "multimodal" -> Multimodal Embedding Model (OpenAI CLIP ViT-B/32)
+     - "siglip"     -> Multimodal Embedding Model (Google SigLIP ViT-B/16)
      - "dino"       -> Self-Supervised Vision Encoder (Meta DINOv2 ViT-B/14)
 3. The product catalog is pulled live from your WooCommerce store's REST
    API (paginated, WC_PER_PAGE products per page, up to WC_MAX_PAGES pages)
@@ -1354,8 +1355,9 @@ Visual Search demo (WooCommerce-backed)
    embedded the same way, cached to disk, and a nearest-neighbor cosine-
    similarity search returns the closest matching products.
 
-Both models together are comfortably under 1 GB of weights:
+Model weights:
   - CLIP ViT-B/32 (OpenAI)     ~ 350 MB
+  - SigLIP ViT-B/16 (Google)   ~ 370 MB
   - DINOv2 ViT-B/14 (Meta)     ~ 330 MB
 
 WooCommerce REST API
@@ -1414,17 +1416,19 @@ os.makedirs(CACHE_DIR, exist_ok=True)
  
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
  
-MODES = ("multimodal", "dino", "dino3")
+MODES = ("multimodal", "siglip", "dino", "dino3")
 MODE_LABELS = {
     "multimodal": "CLIP (multimodal)",
+    "siglip": "SigLIP (multimodal)",
     "dino": "DINOv2 (self-supervised vision encoder)",
     "dino3": "DINOv3 (self-supervised vision encoder)",
 }
 # Embedding dimensionality per mode, used only for the empty-catalog
 # fallback array so it has the right shape before anything is indexed.
-EMBED_DIMS = {"multimodal": 512, "dino": 768, "dino3": 768}
+EMBED_DIMS = {"multimodal": 512, "siglip": 768, "dino": 768, "dino3": 768}
  
 DINOV3_MODEL_ID = "facebook/dinov3-vitb16-pretrain-lvd1689m"
+SIGLIP_MODEL_ID = "google/siglip-base-patch16-224"
 _models = {}  # lazy-loaded model cache: {"multimodal": (...), "dino": (...)}
 
 # WooCommerce REST API
@@ -1454,6 +1458,21 @@ def get_multimodal_model():
     return _models["multimodal"]
 
 
+def get_siglip_model():
+    """Multimodal Embedding Model: Google SigLIP ViT-B/16 (224px) image tower
+    -> 768-d pooled feature vector. Trained with a sigmoid (pairwise) loss
+    instead of CLIP's softmax contrastive loss, which generally makes it a
+    sharper image-image matcher than CLIP at a comparable size."""
+    if "siglip" not in _models:
+        from transformers import AutoImageProcessor, AutoModel
+
+        processor = AutoImageProcessor.from_pretrained(SIGLIP_MODEL_ID, token=HF_TOKEN)
+        model = AutoModel.from_pretrained(SIGLIP_MODEL_ID, token=HF_TOKEN)
+        model.eval().to(DEVICE)
+        _models["siglip"] = (model, processor)
+    return _models["siglip"]
+
+
 def get_dino_model():
     """Self-Supervised Vision Encoder: Meta DINOv2 ViT-B/14, trained without
     any labels or text captions -> 768-d visual feature vector (CLS token).
@@ -1478,6 +1497,11 @@ def embed_image(img: Image.Image, mode: str) -> np.ndarray:
             inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
             outputs = model(**inputs)
             feat = outputs.last_hidden_state[:, 0, :]  # CLS token
+        elif mode == "siglip":
+            model, processor = get_siglip_model()
+            inputs = processor(images=img, return_tensors="pt")
+            inputs = {k: v.to(DEVICE) for k, v in inputs.items()}
+            feat = model.get_image_features(**inputs)
         else:  # "multimodal"
             model, preprocess = get_multimodal_model()
             tensor = preprocess(img).unsqueeze(0).to(DEVICE)
@@ -1704,6 +1728,7 @@ HTML_PAGE = """<!DOCTYPE html>
         <label for="modelSelect">Embedding Model</label>
         <select id="modelSelect">
           <option value="multimodal">Multimodal Embedding Model (CLIP ViT-B/32)</option>
+          <option value="siglip">Multimodal Embedding Model (SigLIP ViT-B/16)</option>
           <option value="dino">Self-Supervised Vision Encoder (DINOv2 ViT-B/14)</option>
         </select>
       </div>
