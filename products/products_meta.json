@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "category": "men's clothing",
+    "price": 109.95,
+    "source_url": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
+    "file": "1_fjallraven_foldsack_no_1_backpack_fits_1.png"
+  },
+  {
+    "id": 2,
+    "title": "Mens Casual Premium Slim Fit T-Shirts ",
+    "category": "men's clothing",
+    "price": 22.3,
+    "source_url": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_t.png",
+    "file": "2_mens_casual_premium_slim_fit_t_shirts.png"
+  },
+  {
+    "id": 3,
+    "title": "Mens Cotton Jacket",
+    "category": "men's clothing",
+    "price": 55.99,
+    "source_url": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_t.png",
+    "file": "3_mens_cotton_jacket.png"
+  },
+  {
+    "id": 4,
+    "title": "Mens Casual Slim Fit",
+    "category": "men's clothing",
+    "price": 15.99,
+    "source_url": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_t.png",
+    "file": "4_mens_casual_slim_fit.png"
+  },
+  {
+    "id": 5,
+    "title": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+    "category": "jewelery",
+    "price": 695,
+    "source_url": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_t.png",
+    "file": "5_john_hardy_women_s_legends_naga_gold_sil.png"
+  },
+  {
+    "id": 6,
+    "title": "Solid Gold Petite Micropave ",
+    "category": "jewelery",
+    "price": 168,
+    "source_url": "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_t.png",
+    "file": "6_solid_gold_petite_micropave.png"
+  },
+  {
+    "id": 7,
+    "title": "White Gold Plated Princess",
+    "category": "jewelery",
+    "price": 9.99,
+    "source_url": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_t.png",
+    "file": "7_white_gold_plated_princess.png"
+  },
+  {
+    "id": 8,
+    "title": "Pierced Owl Rose Gold Plated Stainless Steel Double",
+    "category": "jewelery",
+    "price": 10.99,
+    "source_url": "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_t.png",
+    "file": "8_pierced_owl_rose_gold_plated_stainless_s.png"
+  },
+  {
+    "id": 9,
+    "title": "WD 2TB Elements Portable External Hard Drive - USB 3.0 ",
+    "category": "electronics",
+    "price": 64,
+    "source_url": "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_t.png",
+    "file": "9_wd_2tb_elements_portable_external_hard_d.png"
+  },
+  {
+    "id": 10,
+    "title": "SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s",
+    "category": "electronics",
+    "price": 109,
+    "source_url": "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png",
+    "file": "10_sandisk_ssd_plus_1tb_internal_ssd_sata_i.png"
+  },
+  {
+    "id": 11,
+    "title": "Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5",
+    "category": "electronics",
+    "price": 109,
+    "source_url": "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_t.png",
+    "file": "11_silicon_power_256gb_ssd_3d_nand_a55_slc_.png"
+  },
+  {
+    "id": 12,
+    "title": "WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive",
+    "category": "electronics",
+    "price": 114,
+    "source_url": "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_t.png",
+    "file": "12_wd_4tb_gaming_drive_works_with_playstati.png"
+  },
+  {
+    "id": 13,
+    "title": "Acer SB220Q bi 21.5 inches Full HD (1920 x 1080) IPS Ultra-Thin",
+    "category": "electronics",
+    "price": 599,
+    "source_url": "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_t.png",
+    "file": "13_acer_sb220q_bi_21_5_inches_full_hd_1920_.png"
+  },
+  {
+    "id": 14,
+    "title": "Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor (LC49HG90DMNXZA) \u2013 Super Ultrawide Screen QLED ",
+    "category": "electronics",
+    "price": 999.99,
+    "source_url": "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_t.png",
+    "file": "14_samsung_49_inch_chg90_144hz_curved_gamin.png"
+  },
+  {
+    "id": 15,
+    "title": "BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats",
+    "category": "women's clothing",
+    "price": 56.99,
+    "source_url": "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_t.png",
+    "file": "15_biylaclesen_women_s_3_in_1_snowboard_jac.png"
+  },
+  {
+    "id": 16,
+    "title": "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
+    "category": "women's clothing",
+    "price": 29.95,
+    "source_url": "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_t.png",
+    "file": "16_lock_and_love_women_s_removable_hooded_f.png"
+  },
+  {
+    "id": 17,
+    "title": "Rain Jacket Women Windbreaker Striped Climbing Raincoats",
+    "category": "women's clothing",
+    "price": 39.99,
+    "source_url": "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2t.png",
+    "file": "17_rain_jacket_women_windbreaker_striped_cl.png"
+  },
+  {
+    "id": 18,
+    "title": "MBJ Women's Solid Short Sleeve Boat Neck V ",
+    "category": "women's clothing",
+    "price": 9.85,
+    "source_url": "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_t.png",
+    "file": "18_mbj_women_s_solid_short_sleeve_boat_neck.png"
+  },
+  {
+    "id": 19,
+    "title": "Opna Women's Short Sleeve Moisture",
+    "category": "women's clothing",
+    "price": 7.95,
+    "source_url": "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_t.png",
+    "file": "19_opna_women_s_short_sleeve_moisture.png"
+  },
+  {
+    "id": 20,
+    "title": "DANVOUY Womens T Shirt Casual Cotton Short",
+    "category": "women's clothing",
+    "price": 12.99,
+    "source_url": "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_t.png",
+    "file": "20_danvouy_womens_t_shirt_casual_cotton_sho.png"
+  }
+]
